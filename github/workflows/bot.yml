@@ -1,0 +1,35 @@
+name: Run Discord Bot
+
+on:
+  push:
+    branches:
+      - main  # يشغل البوت عند دفع تغييرات إلى الفرع الرئيسي
+  schedule:
+    - cron: '0 * * * *'  # تشغيل البوت مرة كل ساعة (يمكنك تعديلها حسب حاجتك)
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # يعمل على نظام تشغيل Ubuntu
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # تأكد من أنك تستخدم النسخة المناسبة من Node.js
+
+      - name: Install Dependencies
+        run: |
+          npm install  # تثبيت التبعيات من `package.json`
+
+      - name: Set up .env file
+        run: |
+          echo "DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}" >> .env
+          echo "CHANNEL_ID=${{ secrets.CHANNEL_ID }}" >> .env
+
+      - name: Run Bot
+        run: |
+          node index.js  # تشغيل البوت
+
