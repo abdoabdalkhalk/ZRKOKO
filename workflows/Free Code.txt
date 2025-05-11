@@ -1,0 +1,196 @@
+# FREE "AIMBOT **AI**" INTERNAL 
+Currently safe ⚠️ 
+
+```using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Client;
+using ImGuiNET;
+using Memory;
+namespace AotForms
+{
+    internal static class AimbotVisible
+    {
+        internal static void Work()
+        {
+            while (true)
+            {
+                if (!Config.Aimbot) // your config name
+                {
+                    Thread.Sleep(1);
+                    continue;
+                }
+                if (Core.Width == -1 || Core.Height == -1 || !Core.HaveMatrix)
+                {
+                    Thread.Sleep(1);
+                    continue;
+                }
+
+                Entity target = FindBestTarget();
+                if (target != null)
+                {
+                    AimAtTarget(target);
+                }
+
+            }
+        }
+
+        private static Entity FindBestTarget()
+        {
+            Entity bestTarget = null;
+            float closestDistance = float.MaxValue;
+            var screenCenter = new Vector2(Core.Width / 2f, Core.Height / 2f);
+
+            foreach (var entity in Core.Entities.Values)
+            {
+                if (entity.IsDead) continue; // Skip dead entities
+
+                if (Config.IgnoreKnocked)
+                {
+                    if (entity.IsKnocked) continue;
+                }
+                var head2D = W2S.WorldToScreen(Core.CameraMatrix, entity.Head, Core.Width, Core.Height);
+                if (head2D.X < 1 || head2D.Y < 1) continue; // Skip off-screen entities
+
+                float playerDistance = Vector3.Distance(Core.LocalMainCamera, entity.Head);
+                if (playerDistance > Config.AimBotMaxDistance) continue; // Skip too far entities
+
+                var crosshairDistance = Vector2.Distance(screenCenter, head2D);
+                if (crosshairDistance < closestDistance && crosshairDistance <= Config.AimbotFOVvalue)
+                {
+                    closestDistance = crosshairDistance;
+                    bestTarget = entity;
+                }
+            }
+
+            return bestTarget;
+        }
+
+        private static void AimAtTarget(Entity target)
+        {
+            /*
+            var playerLook = MathUtils.GetRotationToLocation(target.Head, Config.aimlegit, Core.LocalMainCamera);
+            InternalMemory.Write(Core.LocalPlayer + Offsets.AimRotation, playerLook);
+            */
+
+            if (target == null || target.Address == 0) return;
+
+            uint m_HeadCollider;
+            var rHeadCollider = InternalMemory.Read<uint>(target.Address + 0x3b8, out m_HeadCollider);
+            if (!rHeadCollider || m_HeadCollider == 0) return;
+
+            const int repeatCount = 10;
+
+            for (int i = 0; i < repeatCount; i++)
+            {
+                InternalMemory.Write(target.Address + 0x50, m_HeadCollider);
+            }
+            InternalMemory.Write(target.Address + 0x50, m_HeadCollider);
+        }
+    }
+}
+```
+By = Grej
+
+# MAGIC BULLET  NO ANTI-CHEAT NEED APPLY IN LOBBY
+
+string search = "AC C5 27 37 30 48 2D E9 01 40 A0 E1 20 10 9F E5 00 50 A0 E1 1C 00 94 E5 01 10 8F E0 2B E3 FB EB";
+string replace = "D7 A4 40 3F";
+
+# >  ` - RESET GUEST ACCOUNT - `
+
+s = ```10 4C 2D E9 08 B0 8D E2 0C 01 9F E5 00 00 8F E0 00 00 D0 E5 00 00 50 E3 06 00 00 1A FC 00 9F E5 00 00 9F E7 00 00 90 E5```
+r = ```01 00 A0 E3 1E FF 2F E1```
+
+# Sniper Switch
+
+SNIPER SWITCH AWM-Y (1 value)
+S: 3F 00 00 80 3E 00 00 00 00 04 00 00 00 00 00 80 3F 00 00 20 41 00 00 34 42 01 00 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 80 3F 8F C2 35 3F 9A 99 99 3F 00 00 80 3F 00 00 00 00 00 00 80 3F 00 00 80 3F 00 00 80 3F
+
+SNIPER SWITCH AWM (1 value)
+S: 3F 00 00 80 3E 00 00 00 00 04 00 00 00 00 00 80 3F 00 00 20 41 00 00 34 42 01 00 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 80 3F 0A D7 23 3F 9A 99 99 3F 00 00 80 3F 00 00 00 00 00 00 80 3F 00 00 80 3F 00 00 80 3F 
+
+SNIPER SWITCH KAR98K (1 value)
+S: 3F 00 00 80 3E 00 00 00 00 04 00 00 00 00 00 80 3F 00 00 20 41 00 00 34 42 01 00 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 80 3F CD CC 4C 3F CD CC 0C 40 00 00 80 3F 00 00 00 00 00 00 80 3F 00 00 80 3F 00 00 80 3F 00 00 00 00 00 00 00 00 00 00 80 3F 00 00 00 00 00 00 80 3E 00 00 00 00 00 00 80 3F 00 00 80 3F 00 00 80 3F 00 00 00 00
+
+SNIPER SWITCH VSK94 (1 value)
+S: 3F 00 00 80 3E 00 00 00 00 04 00 00 00 00 00 80 3F 00 00 20 41 00 00 34 42 01 00 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 80 3F 71 3D 8A 3F 00 00 80 3F 00 00 80 3F 00 00 00 00 33 33 93 3F 00 00 80 3F 00 00 80 3F 00 00 00 00 00 00 00 00 9A 99 19 3F 00 00 00 BF 00 00 00 00 00 00 00 00 00 00 80 3F 00 00 80 3F 00 00 80 3F 00 00 00 00
+
+SNIPER SWITCH M24 (1 value)
+S: 3F 00 00 80 3E 00 00 00 00 06 00 00 00 CD CC 4C 3F 00 00 20 41 00 00 34 42 01 00 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 80 3F 66 66 66 3F 9A 99 99 3F 00 00 80 3F 00 00 00 00 33 33 93 3F 00 00 80 3F 00 00 80 3F 00 00 00 00 00 00 00 00 00 00 80 3F 00 00 00 00 00 00 80 3E 00 00 00 00 00 00 80 3F 00 00 80 3F 00 00 80 3F 00 00 00 00
+
+SNIPER SWITCH M82B (1 value)
+S: 3F 00 00 80 3E 00 00 00 00 04 00 00 00 00 00 80 3F 00 00 20 41 00 00 34 42 01 00 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 80 3F 9A 99 19 3F CD CC 8C 3F 00 00 80 3F 00 00 00 00 66 66 66 3F 00 00 80 3F 00 00 80 3F 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 3F 00 00 80 3F 00 00 80 3F 00 00 00 00 
+
+SNIPER SWITCH ALL (10-11 values)
+S: 3F 00 00 80 3E 00 00 00 00 ?? 00 00 00 ?? ?? ?? 3F 00 00 20 41 00 00 34 42 01 00 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 80 3F ?? ?? ?? 3F ?? ?? ?? ?? 00 00 80 3F 00 00 00 00 ?? ?? ?? 3F 00 00 80 3F 00 00 80 3F 00 00 00 00 00 00 00 00 ?? ?? ?? ?? 00 00 00 ?? 00 00 ?? ?? 00 00 00 00 00 00 80 3F 00 00 80 3F 00 00 80 3F ?? ?? ?? ?? 01 00 00 00 ?? ?? ?? ?? ?? ?? ?? ?? 9A 99 19 3F ?? ?? ?? ?? 00 00 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ?? ?? ?? 3F ?? ?? ?? ?? 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 CD CC 4C 3E ?? 00 00 00 00 00 00 00 ?? ?? ?? ?? 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ?? ?? ?? ?? 00 00 00 00 38 ?? ?? ?? FF FF FF FF 00 00 00 00 00 00 80 3F 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ?? ?? ?? ?? 00 00 00 00 ?? 00 00 00 ?? 00 00 00 ?? ?? ?? ?? 00 00 00 00 ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? 00 ?? 00 ?? ?? ?? ?? ?? ?? ?? ?? ?? 00 ?? 00 ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ??
+
+Replace For all Search
+R: 1A 00 00 80 1A
+
+
+# Fast Reload
+Note- Apply it in lobby, An use any one replace from the bellow, Don't forget to give credit to me @Python dev
+
+Search - 
+30 48 2D E9 08 B0 8D E2 00 40 A0 E1 97 04 02 E3 00 10 A0 E3 96 DC 4C EB 01 00 50 E3 0C 00 00 1A 97 04 02 E3 00 10 A0 E3 60 DC 4C EB 00 50 A0 E1 00 00 55 E3 01 00 00 1A 00 00 A0 E3 EE D4 DB EB
+
+
+Replace 1  (Safe) -
+30 48 2D E9 08 B0 8D E2 00 40 A0 E1 97 04 02 E3 00 10 A0 E3 96 DC 4C EB 00 F0 20 E3 00 F0 20 E3 97 04 02 E3 00 10 A0 E3 60 DC 4C EB 00 50 A0 E1 00 F0 20 E3 00 F0 20 E3 00 00 A0 E3 EE D4 DB EB
+
+
+Replace 2   (Safer) -
+30 48 2D E9 08 B0 8D E2 00 40 A0 E1 97 04 02 E3 00 10 A0 E3 96 DC 4C EB 00 00 50 E1 00 F0 20 E3 97 04 02 E3 00 10 A0 E3 60 DC 4C EB 00 50 A0 E1 00 F0 20 E3 00 F0 20 E3 00 00 A0 E3 EE D4 DB EB
+
+
+Replace 3 (Safest) -
+30 48 2D E9 08 B0 8D E2 00 40 A0 E1 97 04 02 E3 00 10 A0 E3 96 DC 4C EB 00 00 50 E1 0C 00 00 1A 97 04 02 E3 00 10 A0 E3 60 DC 4C EB 00 50 A0 E1 00 00 55 E3 00 F0 20 E3 00 00 A0 E3 EE D4 DB EB
+
+
+Replace 4 (Recommended) -
+30 48 2D E9 08 B0 8D E2 00 40 A0 E1 97 04 02 E3 00 10 A0 E3 96 DC 4C EB 01 00 50 E3 00 F0 20 E3 97 04 02 E3 00 10 A0 E3 60 DC 4C EB 00 50 A0 E1 00 00 55 E3 01 00 00 1A 00 00 A0 E3 EE D4 DB EB
+
+High Jump
+30 48 2D E9 08 B0 8D E2 00 40 A0 E1 38 01 9F E5 00 00 8F E0 00 00 D0 E5 00 00 50 E3 06 00 00 1A 28 01 9F E5 00 00 9F E7 00 00 90 E5 88 94 E8 EB 1C 01 9F E5 01 10 A0 E3 00 10 CF E7 BE 05 03 E3 00 10 A0 E3
+
+
+84 0F 43 E3 1E FF 2F E1
+
+
+
+WALLHACK
+3F AE 47 81 3F 00 1A B7 EE DC 3A 9F ED 30 
+
+
+
+BF AE 47 81 3F 00 1A B7 EE DC 3A 9F ED 30
+
+
+NO RECOIL
+S : 
+E8 00 00 7A 44 F0 48 2D E9 10 B0 8D E2 02 8B 2D ED 08 D0 4D E2 00 50 A0 E1 10 1A 08 EE 08 40 95 E5 00 00 54 E3
+
+R : 
+E8 00 00 7A 7A F0 48 2D E9 10 B0 8D E2 02 8B 2D ED 08 D0 4D E2 00 50 A0 E1 10 1A 08 EE 08 40 95 E5 00 00 54 E3
+
+
+FAST RELOAD
+99 10 A0 E3 6D
+
+99 10 A0 E3 00
+
+# Aimbot Drag :Fire_Cyan:
+
+FF FF 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 FF FF FF FF FF FF FF FF 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? 00 00 00 00 00 00 00 00 00 00 00 00 00 00 A5 43
+
+
+
+0xD2
+
+0x9E
+
